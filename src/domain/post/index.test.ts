@@ -1,19 +1,16 @@
 import { Post } from "./index";
+
 describe("Post domain", () => {
   describe("sortByTitle", () => {
-    describe("asc", () => {
-      test("should be asc by title", () => {
-        expect(
-          Post.sortByTitle(mockPostList, "asc").map((v) => v.id)
-        ).toStrictEqual([2, 1, 4, 3]);
-      });
+    test("when sort by asc, should be asc by title", () => {
+      expect(
+        Post.sortByTitle(mockPostList, "asc").map((v) => v.id)
+      ).toStrictEqual([2, 1, 4, 3]);
     });
-    describe("desc", () => {
-      test("should be desc by title", () => {
-        expect(
-          Post.sortByTitle(mockPostList, "desc").map((v) => v.id)
-        ).toStrictEqual([3, 4, 1, 2]);
-      });
+    test("when sort by desc, should be desc by title", () => {
+      expect(
+        Post.sortByTitle(mockPostList, "desc").map((v) => v.id)
+      ).toStrictEqual([3, 4, 1, 2]);
     });
   });
 });
