@@ -5,14 +5,26 @@ export type Post = {
   body: string;
 };
 
+export type SortType = "asc" | "desc";
+
 // titleをアルファベット順に並べる
-const sortByTitle = (posts: Post[]) => {
+const sortByTitle = (posts: Post[], sortType: SortType) => {
   return [...posts].sort((a, b) => {
-    if (a.title < b.title) {
-      return -1;
+    if (sortType === "asc") {
+      if (a.title < b.title) {
+        return -1;
+      }
+      if (a.title > b.title) {
+        return 1;
+      }
     }
-    if (a.title > b.title) {
-      return 1;
+    if (sortType === "desc") {
+      if (a.title > b.title) {
+        return -1;
+      }
+      if (a.title < b.title) {
+        return 1;
+      }
     }
     return 0;
   });
