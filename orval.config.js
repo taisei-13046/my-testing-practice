@@ -6,6 +6,12 @@ module.exports = {
       schemas: "src/services/models",
       client: "react-query",
       mock: true,
+      override: {
+        mutator: {
+          path: "./src/lib/axios.ts",
+          name: "customInstance",
+        },
+      },
     },
     input: {
       target: "./openapi/swagger.yml",

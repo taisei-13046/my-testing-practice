@@ -1,10 +1,7 @@
 import { PostList } from "../../models";
 import { Post } from "../../../domain/post";
-import { AxiosResponse } from "axios";
 
-export const PostsTranslator = ({
-  data,
-}: AxiosResponse<PostList, any>): Post[] =>
+export const PostsTranslator = (data: PostList): Post[] =>
   data.map((data) => ({
     id: data.id,
     userId: data.userId,

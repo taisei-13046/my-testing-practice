@@ -5,12 +5,6 @@
  * See https://jsonplaceholder.typicode.com/
  * OpenAPI spec version: 1.0.0
  */
-import axios from 'axios'
-import type {
-  AxiosRequestConfig,
-  AxiosResponse,
-  AxiosError
-} from 'axios'
 import {
   useQuery
 } from '@tanstack/react-query'
@@ -24,39 +18,51 @@ import type {
   PostList,
   Post
 } from '../../models'
+import { customInstance } from '../../../lib/axios';
+import type { ErrorType } from '../../../lib/axios';
 
+
+// eslint-disable-next-line
+  type SecondParameter<T extends (...args: any) => any> = T extends (
+  config: any,
+  args: infer P,
+) => any
+  ? P
+  : never;
 
 /**
  * Returns all posts
  */
 export const getPosts = (
-     options?: AxiosRequestConfig
- ): Promise<AxiosResponse<PostList>> => {
-    return axios.get(
-      `/posts`,options
-    );
-  }
-
+    
+ options?: SecondParameter<typeof customInstance>,signal?: AbortSignal
+) => {
+      return customInstance<PostList>(
+      {url: `/posts`, method: 'get', signal
+    },
+      options);
+    }
+  
 
 export const getGetPostsQueryKey = () => [`/posts`];
 
     
 export type GetPostsQueryResult = NonNullable<Awaited<ReturnType<typeof getPosts>>>
-export type GetPostsQueryError = AxiosError<unknown>
+export type GetPostsQueryError = ErrorType<unknown>
 
-export const useGetPosts = <TData = Awaited<ReturnType<typeof getPosts>>, TError = AxiosError<unknown>>(
-  options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getPosts>>, TError, TData>, axios?: AxiosRequestConfig}
+export const useGetPosts = <TData = Awaited<ReturnType<typeof getPosts>>, TError = ErrorType<unknown>>(
+  options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getPosts>>, TError, TData>, request?: SecondParameter<typeof customInstance>}
 
   ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } => {
 
-  const {query: queryOptions, axios: axiosOptions} = options ?? {};
+  const {query: queryOptions, request: requestOptions} = options ?? {};
 
   const queryKey =  queryOptions?.queryKey ?? getGetPostsQueryKey();
 
   
 
 
-  const queryFn: QueryFunction<Awaited<ReturnType<typeof getPosts>>> = ({ signal }) => getPosts({ signal, ...axiosOptions });
+  const queryFn: QueryFunction<Awaited<ReturnType<typeof getPosts>>> = ({ signal }) => getPosts(requestOptions, signal);
 
 
   
@@ -72,33 +78,35 @@ export const useGetPosts = <TData = Awaited<ReturnType<typeof getPosts>>, TError
  * Returns a post by id
  */
 export const getPost = (
-    id: number, options?: AxiosRequestConfig
- ): Promise<AxiosResponse<Post>> => {
-    return axios.get(
-      `/posts/${id}`,options
-    );
-  }
-
+    id: number,
+ options?: SecondParameter<typeof customInstance>,signal?: AbortSignal
+) => {
+      return customInstance<Post>(
+      {url: `/posts/${id}`, method: 'get', signal
+    },
+      options);
+    }
+  
 
 export const getGetPostQueryKey = (id: number,) => [`/posts/${id}`];
 
     
 export type GetPostQueryResult = NonNullable<Awaited<ReturnType<typeof getPost>>>
-export type GetPostQueryError = AxiosError<void>
+export type GetPostQueryError = ErrorType<void>
 
-export const useGetPost = <TData = Awaited<ReturnType<typeof getPost>>, TError = AxiosError<void>>(
- id: number, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getPost>>, TError, TData>, axios?: AxiosRequestConfig}
+export const useGetPost = <TData = Awaited<ReturnType<typeof getPost>>, TError = ErrorType<void>>(
+ id: number, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getPost>>, TError, TData>, request?: SecondParameter<typeof customInstance>}
 
   ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } => {
 
-  const {query: queryOptions, axios: axiosOptions} = options ?? {};
+  const {query: queryOptions, request: requestOptions} = options ?? {};
 
   const queryKey =  queryOptions?.queryKey ?? getGetPostQueryKey(id);
 
   
 
 
-  const queryFn: QueryFunction<Awaited<ReturnType<typeof getPost>>> = ({ signal }) => getPost(id, { signal, ...axiosOptions });
+  const queryFn: QueryFunction<Awaited<ReturnType<typeof getPost>>> = ({ signal }) => getPost(id, requestOptions, signal);
 
 
   
