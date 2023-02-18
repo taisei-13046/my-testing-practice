@@ -1,16 +1,20 @@
-import { useQueryPosts } from "../../services/hooks/useGetPosts";
+import { Card } from "../../components/Card";
+import { useTop } from "./useTop";
 
 export const TopPage = () => {
-  const { data: posts } = useQueryPosts();
+  const { sortedPosts } = useTop();
 
   return (
-    <div>
-      {posts?.map((post) => (
-        <>
-          <div>{post.title}</div>
-          <div>{post.body}</div>
-        </>
-      ))}
-    </div>
+    <>
+      <h1 className="mb-5">Top Page</h1>
+      <div className="flex flex-col gap-2">
+        {sortedPosts?.map((post) => (
+          <Card key={post.id}>
+            <div>{post.title}</div>
+            <div>{post.body}</div>
+          </Card>
+        ))}
+      </div>
+    </>
   );
 };
