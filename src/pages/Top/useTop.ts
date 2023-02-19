@@ -1,6 +1,6 @@
 import React from "react";
 import { Post, SortType } from "../../domain/post";
-import { useQueryPosts } from "../../services/hooks/useGetPosts";
+import { useQueryPosts } from "../../services/hooks/useQueryPosts";
 
 export const useTop = () => {
   const [sortType, setSortType] = React.useState<SortType>("asc");
